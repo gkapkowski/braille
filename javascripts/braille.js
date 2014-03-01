@@ -114,7 +114,7 @@ $(function(){
         },
         prefix: '>>> ',
         text: '',
-        keyMap: 'cxzbnm',
+        keyMap: 'fdsjkl',
 
         initialize: function () {
             this.compileTemplate();
