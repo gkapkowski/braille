@@ -32,8 +32,10 @@ $(function(){
             var combination = _.filter(_.keys(this.pressedKeys), function (keycode) { 
                 return self.pressedKeys[keycode];
             });
-            var key = _.map(combination, function (code) { return String.fromCharCode(code); });
-            return key.sort().join('').toLowerCase();
+            var key = _.map(combination, function (code) { 
+                return String.fromCharCode(code).toLowerCase(); 
+            });
+            return key.sort();
         }
 
     });
@@ -45,72 +47,74 @@ $(function(){
         lastPrint: 0,
         timeLimit: 500,  // miliseconds
         combinations: {
-            b: 0x2820,
-            bc: 0x2824,
-            bcm: 0x282C,
-            bcmn: 0x283C,
-            bcmnx: 0x283E,
-            bcmnxz: 0x283F,
-            bcmnz: 0x283D,
-            bcmx: 0x282E,
-            bcmxz: 0x282F,
-            bcmz: 0x282D,
-            bcn: 0x2834,
-            bcnx: 0x2836,
-            bcnxz: 0x2837,
-            bcnz: 0x2835,
-            bcx: 0x2826,
-            bcxz: 0x2827,
-            bcz: 0x2825,
-            bm: 0x2828,
-            bmn: 0x2838,
-            bmnx: 0x283A,
-            bmnxz: 0x283B,
-            bmnz: 0x2839,
-            bmx: 0x282A,
-            bmxz: 0x282B,
-            bmz: 0x2829,
-            bn: 0x2830,
-            bnx: 0x2832,
-            bnxz: 0x2833,
-            bnz: 0x2831,
-            bx: 0x2822,
-            bxz: 0x2823,
-            bz: 0x2821,
-            c: 0x2804,
-            cm: 0x280C,
-            cmn: 0x281C,
-            cmnx: 0x281E,
-            cmnxz: 0x281F,
-            cmnz: 0x281D,
-            cmx: 0x280E,
-            cmxz: 0x280F,
-            cmz: 0x280D,
-            cn: 0x2814,
-            cnx: 0x2816,
-            cnxz: 0x2817,
-            cnz: 0x2815,
-            cx: 0x2806,
-            cxz: 0x2807,
-            cz: 0x2805,
-            m: 0x2808,
-            mn: 0x2818,
-            mnx: 0x281A,
-            mnxz: 0x281B,
-            mnz: 0x2819,
-            mx: 0x280A,
-            mxz: 0x280B,
-            mz: 0x2809,
-            n: 0x2810,
-            nx: 0x2812,
-            nxz: 0x2813,
-            nz: 0x2811,
-            x: 0x2802,
-            xz: 0x2803,
-            z: 0x2801,
+            //'': 0x2800,
+            '1': 0x2801,
+            '2': 0x2802,
+            '12': 0x2803,                                                                                                                                                 
+            '3': 0x2804,
+            '13': 0x2805,
+            '23': 0x2806,
+            '123': 0x2807,
+            '4': 0x2808,
+            '14': 0x2809,
+            '24': 0x280A,
+            '124': 0x280B,
+            '34': 0x280C,
+            '134': 0x280D,
+            '234': 0x280E,
+            '1234': 0x280F,
+            '5': 0x2810,
+            '15': 0x2811,
+            '25': 0x2812,
+            '125': 0x2813,
+            '35': 0x2814,
+            '135': 0x2815,
+            '235': 0x2816,
+            '1235': 0x2817,
+            '45': 0x2818,
+            '145': 0x2819,
+            '245': 0x281A,
+            '1245': 0x281B,
+            '345': 0x281C,
+            '1345': 0x281D,
+            '2345': 0x281E,
+            '12345': 0x281F,
+            '6': 0x2820,
+            '16': 0x2821,            
+            '26': 0x2822,
+            '126': 0x2823,
+            '36': 0x2824,
+            '136': 0x2825,
+            '236': 0x2826,
+            '1236': 0x2827,
+            '46': 0x2828,
+            '146': 0x2829,
+            '246': 0x282A,
+            '1246': 0x282B,
+            '346': 0x282C,
+            '1346': 0x282D,
+            '2346': 0x282E,
+            '12346': 0x282F,
+            '56': 0x2830,
+            '156': 0x2831,
+            '256': 0x2832,
+            '1256': 0x2833,
+            '356': 0x2834,
+            '1356': 0x2835,
+            '2356': 0x2836,
+            '12356': 0x2837,
+            '456': 0x2838,
+            '1456': 0x2839,
+            '2456': 0x283A,
+            '12456': 0x283B,
+            '3456': 0x283C,
+            '13456': 0x283D,
+            '23456': 0x283E,
+            '123456': 0x283F,
         },
         prefix: '>>> ',
         text: '',
+        keyMap: 'cxzbnm',
 
         initialize: function () {
             this.compileTemplate();
@@ -143,11 +147,19 @@ $(function(){
         },
 
         resolveCombination: function (combination) {
+            var self = this;
             if (_.isEqual(this.prev, combination)) {
                 var now = Date.now();
                 if (now - this.lastPrint > this.timeLimit) {
                     this.lastPrint = now;
-                    this.text += String.fromCharCode(this.combinations[combination]);
+                    
+                    //Get `123456`-like version of keys configured in `keyMap`
+                    var key = _.map(combination, function (char) {
+                        return self.keyMap.indexOf(char) + 1;
+                    }).sort().join('');
+
+                    this.text += String.fromCharCode(this.combinations[key]);
+                    
                     this.$el.html(this.prefix + this.text);
                 }
             } else {
