@@ -166,6 +166,20 @@ section {
   font-size: 18pt;
 }
 
+section p {
+    word-spacing: 6px;
+}
+
+section ul {
+    display: inline;
+    padding: 0; 
+}
+
+section ul li {
+    display: inline-block;
+    padding-right: 10px;
+}
+
 small {
   font-size:11px;
 }

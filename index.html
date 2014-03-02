@@ -13,13 +13,20 @@
     <![endif]-->
     <script type="text/javascript" src="javascripts/underscore.js"></script>
     <script type="text/javascript" src="javascripts/jquery-2.1.0.js"></script>
+    <script type="text/javascript" src="javascripts/jquery-ui-1.10.4.custom.js"></script>
     <script type="text/javascript" src="javascripts/swig.js"></script>
     <script type="text/javascript" src="javascripts/backbone.js"></script>
     <script type="text/javascript" src="javascripts/braille.js"></script>
 
     <!-- Templates -->
     <script id="mainTemplate" type="text/x-swig-template">
-        Press keys "Z X C - B N M" to start writing.
+        Key map:
+        <ul>
+        {% for key in keys %}
+            <li>{{ loop.index }} - {{ key }}</li>
+        {% endfor %}
+        </ul>
+        <p></p>
     </script>
   </head>
   <body>
@@ -44,6 +51,13 @@
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+    <script type="text/javascript">
+        $(function(){
+            var App = new Braille.Application({
+                el: $('section')
+            });
+            App.start();    
+        });
+    </script>
   </body>
 </html>
