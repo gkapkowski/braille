@@ -113,6 +113,7 @@ $(function(){
             '123456': 0x283F,
         },
         prefix: '>>> ',
+        space: ' &nbsp',
         text: '',
         keyMap: 'fdsjkl',
 
@@ -127,7 +128,7 @@ $(function(){
         },
 
         getContext: function () {
-            return {};
+            return {keys: this.keyMap};
         },
 
         getTemplate: function () {
@@ -146,32 +147,50 @@ $(function(){
             this.$el.html(this.renderTemplate());
         },
 
-        resolveCombination: function (combination) {
+        resolveCombination: function (comb) {
             var self = this;
-            if (_.isEqual(this.prev, combination)) {
+            if (_.isEqual(this.prev, comb)) {
                 var now = Date.now();
                 if (now - this.lastPrint > this.timeLimit) {
                     this.lastPrint = now;
-                    
-                    //Get `123456`-like version of keys configured in `keyMap`
-                    var key = _.map(combination, function (char) {
-                        return self.keyMap.indexOf(char) + 1;
-                    }).sort().join('');
 
-                    this.text += String.fromCharCode(this.combinations[key]);
-                    
-                    this.$el.html(this.prefix + this.text);
+                    var newChar = this.isSpace(comb) ? this.space : this.getBrailleChar(comb); 
+
+                    elem = $("<span>" + newChar + "</span>");
+                    elem.hide();
+                    this.$el.append(elem);
+                    elem.effect(
+                        'highlight', 
+                        {color: '#6495ED'}, 
+                        500, 
+                        function () {
+                            elem.remove();
+                            self.text += newChar;
+                            self.$el.html(self.prefix + self.text);
+                    });
                 }
             } else {
-                this.prev = combination;
+                this.prev = comb;
             }
+        },
+
+        getNumericCombination: function (combination) {
+            //Get `123456`-like version of keys configured in `keyMap`
+            var self = this;
+            return _.map(combination, function (char) {
+                return self.keyMap.indexOf(char) + 1;
+            }).sort().join('');
+        },
+
+        getBrailleChar: function (combination) {
+            var key = this.getNumericCombination(combination);
+            return String.fromCharCode(this.combinations[key]); 
+        },
+
+        isSpace: function (combination) {
+            return _.isEqual(combination, [' ']);
         }
 
     });
-
-    var App = new Braille.Application({
-        el: $('section')
-    });
-    App.start();
 
 });
