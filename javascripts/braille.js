@@ -116,10 +116,12 @@ $(function(){
         space: ' &nbsp',
         text: '',
         keyMap: 'fdsjkl',
+        outputSelector: 'p',
 
-        initialize: function () {
+        initialize: function (options) {
             this.compileTemplate();
             this.input = new Braille.Input($('body'));
+            this.outputSelector = options.outputSelector || this.outputSelector;
             this.listenTo(this.input, 'change', this.resolveCombination);
         },
 
@@ -128,7 +130,7 @@ $(function(){
         },
 
         getContext: function () {
-            return {keys: this.keyMap};
+            return {keys: this.keyMap.split('')};
         },
 
         getTemplate: function () {
@@ -145,6 +147,8 @@ $(function(){
 
         render: function () {
             this.$el.html(this.renderTemplate());
+            this.output = this.$(this.outputSelector);
+            this.output.html(this.prefix + this.text);
         },
 
         resolveCombination: function (comb) {
@@ -158,7 +162,7 @@ $(function(){
 
                     elem = $("<span>" + newChar + "</span>");
                     elem.hide();
-                    this.$el.append(elem);
+                    self.output.append(elem);
                     elem.effect(
                         'highlight', 
                         {color: '#6495ED'}, 
@@ -166,7 +170,7 @@ $(function(){
                         function () {
                             elem.remove();
                             self.text += newChar;
-                            self.$el.html(self.prefix + self.text);
+                            self.output.html(self.prefix + self.text);
                     });
                 }
             } else {

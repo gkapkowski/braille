@@ -8,26 +8,35 @@
         <script type="text/javascript" src="javascripts/braille.js"></script>
         <!-- Templates -->
         <script id="mainTemplate" type="text/x-swig-template">
-            >>>
+            Key map:
+            <ul>
+            {% for key in keys %}
+                <li>{{ loop.index }} - {{ key }}</li>
+            {% endfor %}
+            </ul>
+            <p></p>
         </script>
         <style type="text/css">
-            #content p {
-                word-spacing: 0px;
+            .content p {
+                word-spacing: 6px;
             }
-            .space {
-
+            .content ul {
+                display: inline;
+                padding: 0; 
+            }
+            .content ul li {
+                display: inline-block;
+                padding-right: 10px;
             }
         </style>
     </head>
     <body>
         <h3>Welcome to Braille Machine Symulator</h3>
-        <div id="content">
-            <p></p>
-        </div>
+        <div class="content"></div>
         <script type="text/javascript">
             $(function(){
                 var App = new Braille.Application({
-                    el: $('#content p')
+                    el: $('.content')
                 });
                 App.start();    
             });
