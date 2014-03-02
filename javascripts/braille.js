@@ -1,6 +1,5 @@
 $(function(){
 
-
     Braille = {};
 
     Braille.Input = function (root) {
@@ -114,7 +113,7 @@ $(function(){
         },
         prefix: '>>> ',
         space: ' &nbsp',
-        text: '',
+        text: [],
         keyMap: 'fdsjkl',
         outputSelector: 'p',
 
@@ -153,6 +152,15 @@ $(function(){
 
         resolveCombination: function (comb) {
             var self = this;
+            if (this.isBackSpace(comb)) {
+                if (this.text.length > 0) {
+                    this.text.pop();
+                    this.output.html(this.prefix + this.text.join(''));
+                }
+                this.prev = null;
+                return;
+            }
+
             if (_.isEqual(this.prev, comb)) {
                 var now = Date.now();
                 if (now - this.lastPrint > this.timeLimit) {
@@ -169,8 +177,8 @@ $(function(){
                         500, 
                         function () {
                             elem.remove();
-                            self.text += newChar;
-                            self.output.html(self.prefix + self.text);
+                            self.text.push(newChar);
+                            self.output.html(self.prefix + self.text.join(''));
                     });
                 }
             } else {
@@ -193,6 +201,10 @@ $(function(){
 
         isSpace: function (combination) {
             return _.isEqual(combination, [' ']);
+        },
+
+        isBackSpace: function (combination) {
+            return _.isEqual(combination, [String.fromCharCode(0x0008)]);  
         }
 
     });
