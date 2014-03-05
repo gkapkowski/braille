@@ -20,6 +20,7 @@
 
     <!-- Templates -->
     <script id="mainTemplate" type="text/x-swig-template">
+        <button>Zen mode</button>
         Key map:
         <ul>
         {% for key in keys %}
@@ -56,7 +57,10 @@
             var App = new Braille.Application({
                 el: $('section')
             });
-            App.start();    
+            App.start(); 
+            App.$('button').click(function () {
+                App.$el.toggleClass('zen');
+            });   
         });
     </script>
   </body>
