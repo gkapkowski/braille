@@ -19,11 +19,13 @@ $(function(){
         keydown: function (event) {
             this.pressedKeys[event.keyCode] = true;
             this.trigger('change', this.getCurrentKeyCodes());
+            return false;
         },
 
         keyup: function (event) {
             this.pressedKeys[event.keyCode] = false;
             this.trigger('change', this.getCurrentKeyCodes());
+            return false;
         },
 
         getCurrentKeyCodes: function () {
