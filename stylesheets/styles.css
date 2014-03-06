@@ -186,6 +186,12 @@ section .header ul li {
     padding-right: 10px;
 }
 
+section .header button {
+  float: right;
+  border: 1px solid gray;
+  background-color: white;
+}
+
 small {
   font-size:11px;
 }
@@ -283,5 +289,4 @@ footer {
     left: 0;
     background-color: #FFF;
     z-index: 10;
-    padding: 40px;
 }
