@@ -20,13 +20,15 @@
 
     <!-- Templates -->
     <script id="mainTemplate" type="text/x-swig-template">
-        <button>Zen mode</button>
-        Key map:
-        <ul>
-        {% for key in keys %}
-            <li>{{ loop.index }} - {{ key }}</li>
-        {% endfor %}
-        </ul>
+        <div class="header">
+            <button>Zen mode</button>
+            Key map:
+            <ul>
+                {% for key in keys %}
+                    <li>{{ loop.index }} - {{ key }}</li>
+                {% endfor %}
+            </ul>
+        </div>
         <p></p>
     </script>
   </head>
