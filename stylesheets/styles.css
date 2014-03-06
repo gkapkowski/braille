@@ -170,12 +170,18 @@ section p {
     word-spacing: 6px;
 }
 
-section ul {
+section .header {
+  border: 1px solid gray;
+  margin-bottom: 20px;
+  font-size: 12pt;
+}
+
+section .header ul {
     display: inline;
     padding: 0; 
 }
 
-section ul li {
+section .header ul li {
     display: inline-block;
     padding-right: 10px;
 }
@@ -277,4 +283,5 @@ footer {
     left: 0;
     background-color: #FFF;
     z-index: 10;
+    padding: 40px;
 }
